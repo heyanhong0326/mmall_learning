@@ -9,8 +9,11 @@
      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+    <!--自动扫描配置：使用<context:component-scan>标签后，spring可以自动去扫描com.mmall下或子包下的java文件，如果扫描到有
+    @Component @Controller @Service 等这些注解的类，则把这些类注解为bean-->
     <context:component-scan base-package="com.mmall" annotation-config="true"/>
 
+    <!--数据库配置文件database.properties的引入-->
     <bean id="propertyConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="order" value="2"/>
@@ -24,10 +27,15 @@
     </bean>
 
 
+    <!--数据库连接池的配置-->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <!--指定连接数据库的JDBC驱动-->
         <property name="driverClassName" value="${db.driverClassName}"/>
+        <!--连接数据库所用的URL-->
         <property name="url" value="${db.url}"/>
+        <!--连接数据库的用户名-->
         <property name="username" value="${db.username}"/>
+        <!--连接数据库所用的密码-->
         <property name="password" value="${db.password}"/>
         <!-- 连接池启动时的初始值 -->
         <property name="initialSize" value="${db.initialSize}"/>
@@ -57,8 +65,11 @@
         <property name="validationQuery" value="SELECT 1 FROM dual"/>
     </bean>
 
+    <!--集成Mybatis  sqlSessionFactory是一个工厂bean，它的作用是解析配置（数据源，别名等）-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--引用上面已经配置好的数据库连接池-->
         <property name="dataSource" ref="dataSource"/>
+        <!--mapper配置文件路径-->
         <property name="mapperLocations" value="classpath*:mappers/*Mapper.xml"></property>
 
         <!-- 分页插件 -->
@@ -76,13 +87,15 @@
 
     </bean>
 
+    <!--mapper扫描配置-->
     <bean name="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.mmall.dao"/>
     </bean>
 
     <!-- 使用@Transactional进行声明式事务管理需要声明下面这行 -->
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
-    <!-- 事务管理 -->
+
+    <!-- Mybatis事务管理配置 -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
         <property name="rollbackOnCommitFailure" value="true"/>

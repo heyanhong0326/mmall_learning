@@ -115,7 +115,7 @@ public class ProductManageController {
             return ServerResponse.createByErrorMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录，请登录管理员");
         }
         if(iUserService.checkAdminRole(user).isSuccess()){
-            String path = request.getSession().getServletContext().getRealPath("upload");//上产路径，文件夹名为upload
+            String path = request.getSession().getServletContext().getRealPath("upload");//上传路径，文件夹名为upload
             String targetFileName = iFileService.upload(file,path);
             String url = PropertiesUtil.getProperty("ftp.server.http.prefix")+targetFileName;
             Map fileMap = Maps.newHashMap();

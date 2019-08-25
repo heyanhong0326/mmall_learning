@@ -105,7 +105,7 @@ public class ProductServiceImpl implements IProductService {
 
         //imageHost   从配置文件中获取，使配置和代码分离，不需要硬编码，（以后配置在演进中会优化为一个热部署的配置
         // 会建立一个配置中心来专门管理这些配置）
-        productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://img.happymmall.com/"));
+        productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://image.imooc.com/"));
 
         //parentCategoryId
         Category category = categoryMapper.selectByPrimaryKey(product.getCategoryId());
@@ -148,7 +148,7 @@ public class ProductServiceImpl implements IProductService {
         productListVo.setId(product.getId() );
         productListVo.setName(product.getName() );
         productListVo.setCategoryId(product.getCategoryId() );
-        productListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://img.happymmall.com/"));
+        productListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://image.imooc.com/"));
         productListVo.setMainImage(product.getMainImage() );
         productListVo.setPrice(product.getPrice() );
         productListVo.setSubtitle(product.getSubtitle() );
